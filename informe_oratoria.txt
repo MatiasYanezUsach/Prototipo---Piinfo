@@ -1,0 +1,7 @@
+Informe de presentación ORATOR.IA
+Fecha: 2025-05-10 22:13:41
+
+Resumen de métricas detectadas:
+- Contacto visual promedio: 74.62%
+- Gestos por segundo estimados: 17.39
+- Movimiento promedio estimado: 14.05 píxeles por frame
