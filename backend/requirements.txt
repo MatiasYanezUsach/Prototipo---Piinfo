@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+python-socketio
+websockets
+ultralytics
+opencv-python
+numpy
+reportlab
+matplotlib
+Pillow
+python-multipart 
