@@ -8,6 +8,17 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Tabl
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
+from reportlab.lib.utils import ImageReader
+
+# Ruta del logo (se intenta primero en raíz y luego en frontend)
+LOGO_PATH = None
+for candidate in [
+    os.path.join(os.path.dirname(__file__), '..', 'orator_logo.png'),  # raíz del repo
+    os.path.join(os.path.dirname(__file__), '..', 'frontend', 'orator_logo.png'),
+]:
+    if os.path.exists(candidate):
+        LOGO_PATH = candidate
+        break
 
 def generar_reporte_avanzado(nombre_usuario, duracion, metricas, config):
     """Generar reporte PDF avanzado con todas las métricas"""
@@ -20,8 +31,53 @@ def generar_reporte_avanzado(nombre_usuario, duracion, metricas, config):
     ahora = datetime.now().strftime("%Y%m%d_%H%M%S")
     pdf_filename = f"reportes/reporte_avanzado_{nombre_usuario}_{ahora}.pdf"
     
-    # Crear documento
-    doc = SimpleDocTemplate(pdf_filename, pagesize=letter)
+    # ------------------------------
+    #  Funciones de diseño por página
+    # ------------------------------
+    def _draw_page_background(canvas, doc):
+        """Fondo y cabecera común para todas las páginas."""
+        canvas.saveState()
+
+        # Fondo suave
+        canvas.setFillColor(colors.HexColor('#f5f7fa'))
+        canvas.rect(0, 0, doc.pagesize[0], doc.pagesize[1], fill=1, stroke=0)
+
+        # Header band
+        canvas.setFillColor(colors.HexColor('#4CAF50'))
+        canvas.rect(0, doc.pagesize[1] - 40, doc.pagesize[0], 40, fill=1, stroke=0)
+
+        # Logo en esquina superior derecha (si existe)
+        if LOGO_PATH:
+            try:
+                canvas.drawImage(LOGO_PATH, doc.pagesize[0] - 60, doc.pagesize[1] - 35, width=50, height=30, mask='auto', preserveAspectRatio=True)
+            except Exception as _:
+                pass
+
+        canvas.restoreState()
+
+    def _draw_first_page(canvas, doc):
+        """Portada con logo grande"""
+        _draw_page_background(canvas, doc)
+        if LOGO_PATH:
+            try:
+                # Centro de la portada
+                logo_width = 200
+                logo_height = 120
+                x = (doc.pagesize[0] - logo_width) / 2
+                y = doc.pagesize[1] - 200
+                canvas.drawImage(LOGO_PATH, x, y, width=logo_width, height=logo_height, mask='auto', preserveAspectRatio=True)
+            except Exception as _:
+                pass
+
+    # Crear documento con callbacks de página
+    doc = SimpleDocTemplate(
+        pdf_filename,
+        pagesize=letter,
+        topMargin=72,
+        bottomMargin=72,
+        leftMargin=50,
+        rightMargin=50,
+    )
     elementos = []
     
     # Estilos
@@ -45,6 +101,7 @@ def generar_reporte_avanzado(nombre_usuario, duracion, metricas, config):
     )
     
     # Portada
+    elementos.append(Spacer(1, 1.2*inch))
     elementos.append(Paragraph("ORATOR.IA", estilo_titulo))
     elementos.append(Paragraph("Reporte de Análisis de Presentación", estilos['Heading2']))
     elementos.append(Spacer(1, 0.5*inch))
@@ -176,8 +233,8 @@ def generar_reporte_avanzado(nombre_usuario, duracion, metricas, config):
             elementos.append(Paragraph(f"• {actividad}", estilos['Normal']))
         elementos.append(Spacer(1, 0.1*inch))
         
-    # Construir PDF
-    doc.build(elementos)
+    # Construir PDF con decoradores
+    doc.build(elementos, onFirstPage=_draw_first_page, onLaterPages=_draw_page_background)
     print(f"✅ PDF generado: {pdf_filename}")
     return pdf_filename
 

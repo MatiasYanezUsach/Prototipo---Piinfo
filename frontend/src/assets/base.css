@@ -111,10 +111,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  max-width: 428px; /* iPhone 14 Pro Max width */
-  margin: 0 auto;
-  background: var(--color-white);
-  box-shadow: var(--shadow-xl);
+  width: 100%;
   position: relative;
 }
 
@@ -398,6 +395,9 @@ body {
 @media (min-width: 768px) {
   #app {
     max-width: 768px;
+    margin: 0 auto;
+    background: var(--color-white);
+    box-shadow: var(--shadow-xl);
   }
   
   .bottom-nav {

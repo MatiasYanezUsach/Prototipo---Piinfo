@@ -1,4 +1,21 @@
 import numpy as np
+import cv2
+
+try:
+    import mediapipe as mp  # type: ignore
+
+    _mp_face_mesh = mp.solutions.face_mesh
+    # Reutilizamos la misma instancia para evitar crearla en cada frame
+    _face_mesh = _mp_face_mesh.FaceMesh(
+        static_image_mode=False,
+        max_num_faces=1,
+        refine_landmarks=True,
+        min_detection_confidence=0.5,
+        min_tracking_confidence=0.5,
+    )
+except (ImportError, AttributeError):
+    # Si MediaPipe no está instalado o falla la inicialización, continuamos con None.
+    _face_mesh = None
 
 def analyze_posture(bbox):
     """Analizar postura basada en bounding box"""
@@ -64,3 +81,52 @@ def reset_metrics():
         'postura_por_tiempo': [],
         'fluidez_por_tiempo': []
     } 
+
+def analyze_eye_contact(frame, yaw_threshold: float = 0.08) -> bool | None:
+    """Determina si el orador mantiene contacto visual aproximado.
+
+    Parámetros
+    ----------
+    frame : np.ndarray
+        Fotograma BGR.
+    yaw_threshold : float
+        Umbral (normalizado) de desviación lateral del eje de la nariz respecto
+        al centro de los ojos para considerar que mira al frente.
+
+    Returns
+    -------
+    bool | None
+        • True  → Se detecta contacto visual.
+        • False → No se detecta contacto visual.
+        • None  → No se pudo determinar (MediaPipe no disponible o no se detecta rostro).
+    """
+    if _face_mesh is None:
+        return None
+
+    # Conversión BGR → RGB (MediaPipe trabaja en RGB)
+    rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    result = _face_mesh.process(rgb)
+
+    if not result.multi_face_landmarks:
+        return False
+
+    # Tomamos la primera cara encontrada
+    face_landmarks = result.multi_face_landmarks[0].landmark
+
+    # Índices de referencia según FaceMesh
+    NOSE_TIP = 1
+    LEFT_EYE_OUTER = 33
+    RIGHT_EYE_OUTER = 263
+
+    nose = face_landmarks[NOSE_TIP]
+    left_eye = face_landmarks[LEFT_EYE_OUTER]
+    right_eye = face_landmarks[RIGHT_EYE_OUTER]
+
+    # Centro horizontal de los ojos
+    eyes_center_x = (left_eye.x + right_eye.x) / 2.0
+
+    # Si la proyección horizontal de la nariz está cerca del centro de los ojos
+    # asumimos que la cabeza está orientada al frente.
+    if abs(nose.x - eyes_center_x) < yaw_threshold:
+        return True
+    return False 

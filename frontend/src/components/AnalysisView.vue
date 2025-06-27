@@ -15,7 +15,7 @@
     <!-- Video/Micrófono principal -->
     <div class="main-visual">
       <div class="video-container" v-if="store.videoFrame">
-        <img :src="store.videoFrame" alt="Video en vivo" class="video-stream">
+        <img :src="store.videoFrame" alt="Video en vivo" :class="['video-stream', { mirror: store.config.camera_type === 'browser' }]">
         <!-- Overlay con información -->
         <div class="video-overlay">
           <div class="participant-info">
@@ -251,7 +251,7 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-lg) var(--spacing-md);
-  background: var(--color-primary);
+  background: var(--gradient-primary);
   color: var(--color-white);
 }
 
@@ -259,7 +259,7 @@ onMounted(() => {
   width: 36px;
   height: 36px;
   border: none;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 50%;
   color: var(--color-white);
   cursor: pointer;
@@ -267,6 +267,12 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
 }
 
 .analysis-header h1 {
@@ -739,5 +745,9 @@ onMounted(() => {
 
 .notification-icon {
   font-size: 1.3rem;
+}
+
+.mirror {
+  transform: scaleX(-1);
 }
 </style>

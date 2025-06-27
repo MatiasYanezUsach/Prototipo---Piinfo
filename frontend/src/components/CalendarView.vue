@@ -104,14 +104,6 @@
         </div>
       </div>
   
-      <!-- Historial -->
-      <div class="history-section">
-        <button class="btn btn-ghost" @click="showHistory = true">
-          <span>📊</span>
-          Historial
-        </button>
-      </div>
-  
       <!-- Modal para agregar plan -->
       <div v-if="showAddPlan" class="modal-overlay" @click="closeAddPlan">
         <div class="add-plan-modal" @click.stop>
@@ -429,7 +421,8 @@
     align-items: center;
     justify-content: space-between;
     padding: var(--spacing-lg) var(--spacing-md);
-    background: var(--color-white);
+    background: var(--gradient-primary);
+    color: var(--color-white);
     border-bottom: 1px solid var(--color-gray-200);
   }
   
@@ -437,7 +430,8 @@
     width: 36px;
     height: 36px;
     border: none;
-    background: var(--color-gray-100);
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--color-white);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -447,14 +441,14 @@
   }
   
   .back-btn:hover, .today-btn:hover {
-    background: var(--color-gray-200);
+    background: rgba(255, 255, 255, 0.25);
     transform: scale(1.05);
   }
   
   .calendar-header h1 {
     font-size: var(--font-size-xl);
     font-weight: 600;
-    color: var(--color-primary);
+    color: var(--color-white);
     letter-spacing: 1px;
   }
   

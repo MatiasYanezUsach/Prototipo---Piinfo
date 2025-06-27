@@ -3,27 +3,7 @@
     <!-- Header profesional -->
     <header class="header">
       <div class="logo-section">
-        <div class="logo-icon">
-          <svg viewBox="0 0 32 32" class="logo-svg">
-            <defs>
-              <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#1a237e"/>
-                <stop offset="50%" style="stop-color:#3949ab"/>
-                <stop offset="100%" style="stop-color:#42a5f5"/>
-              </linearGradient>
-            </defs>
-            <path d="M8 20 Q10 12 16 12 Q22 12 24 20 Q22 18 16 18 Q10 18 8 20 Z" fill="url(#logoGrad)"/>
-            <circle cx="26" cy="16" r="1" fill="url(#logoGrad)" opacity="0.8"/>
-            <circle cx="28" cy="14" r="0.8" fill="url(#logoGrad)" opacity="0.6"/>
-            <circle cx="29" cy="16" r="0.6" fill="url(#logoGrad)" opacity="0.4"/>
-            <circle cx="6" cy="14" r="0.5" fill="url(#logoGrad)" opacity="0.7"/>
-            <circle cx="4" cy="16" r="0.4" fill="url(#logoGrad)" opacity="0.5"/>
-            <circle cx="3" cy="18" r="0.3" fill="url(#logoGrad)" opacity="0.3"/>
-          </svg>
-        </div>
-        <div class="logo-text">
-          <h1>ORATOR.<span class="accent">IA</span></h1>
-        </div>
+        <img src="/orator_logo.png" alt="Orator.ia Logo" class="logo-img"/>
       </div>
       
       <div class="connection-status" :class="getConnectionClass()">
@@ -44,7 +24,7 @@
       <!-- Video Preview -->
       <div class="video-section">
         <div v-if="store.videoFrame" class="video-container">
-          <img :src="store.videoFrame" alt="Video en vivo" class="video-stream">
+          <img :src="store.videoFrame" alt="Video en vivo" :class="['video-stream', { mirror: store.config.camera_type === 'browser' }]">
           <div class="video-overlay">
             <div class="participant-info">
               <span class="participant-name">{{ store.config.nombre || 'Usuario' }}</span>
@@ -139,13 +119,7 @@
             ACCEDER AL PLAN PRO
           </button>
         </div>
-        
-        <div class="promo-rating">
-          <h3>EVALÚA TU</h3>
-          <div class="stars">
-            <span v-for="i in 4" :key="i" class="star">⭐</span>
-          </div>
-        </div>
+      
       </div>
 
       <!-- Grid de opciones -->
@@ -238,6 +212,10 @@
                 <label class="radio-option">
                   <input type="radio" value="ip" v-model="store.config.camera_type">
                   <span class="radio-label">Cámara IP</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" value="browser" v-model="store.config.camera_type">
+                  <span class="radio-label">Cámara del Navegador</span>
                 </label>
               </div>
             </div>
@@ -364,6 +342,9 @@ const getAnalysisTitle = () => {
   if (store.config.camera_type === 'ip') {
     return 'ANÁLISIS CON CÁMARA IP'
   }
+  if (store.config.camera_type === 'browser') {
+    return 'ANÁLISIS EN NAVEGADOR'
+  }
   return 'ANÁLISIS CON CÁMARA LOCAL'
 }
 
@@ -392,48 +373,29 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: var(--space-6) var(--space-4);
-  background: var(--white);
-  border-bottom: 1px solid var(--gray-200);
+  background: var(--gradient-primary);
+  border-bottom: 1px solid var(--color-gray-200);
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
   backdrop-filter: blur(8px);
+  color: var(--color-white);
 }
 
 .logo-section {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-}
-
-.logo-icon {
-  width: 48px;
-  height: 48px;
-  background: var(--gradient-primary);
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
   justify-content: center;
+  background: linear-gradient(135deg, #bbdefb 0%, #e3f2fd 100%);
+  backdrop-filter: blur(4px);
+  padding: 6px 10px;
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
 }
 
-.logo-svg {
-  width: 32px;
-  height: 32px;
-}
-
-.logo-text h1 {
-  font-size: var(--font-size-2xl);
-  font-weight: 900;
-  color: var(--color-primary);
-  letter-spacing: -1px;
-}
-
-.accent {
-  background: var(--gradient-card);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.logo-img {
+  height: 100px;
+  width: auto;
 }
 
 .connection-status {
@@ -514,13 +476,13 @@ onUnmounted(() => {
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-card);
-  min-height: 300px;
+  min-height: 56.25vw; /* 16:9 ratio on mobile */
 }
 
 .video-container {
   position: relative;
   width: 100%;
-  height: 300px;
+  height: 100%;
 }
 
 .video-stream {
@@ -686,7 +648,7 @@ onUnmounted(() => {
 
 .metrics-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: var(--space-3);
 }
 
@@ -812,7 +774,7 @@ onUnmounted(() => {
 /* Grid de opciones */
 .options-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: var(--space-4);
 }
 
@@ -1134,5 +1096,24 @@ onUnmounted(() => {
     border-radius: var(--radius-2xl);
     max-height: 80vh;
   }
+  .video-section {
+    min-height: 400px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .metrics-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .options-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .video-section {
+    min-height: 450px;
+  }
+}
+
+.mirror {
+  transform: scaleX(-1);
 }
 </style>
