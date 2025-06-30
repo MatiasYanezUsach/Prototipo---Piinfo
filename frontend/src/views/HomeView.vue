@@ -195,11 +195,12 @@
             
             <div class="form-group">
               <label for="duracion">⏱️ Duración del análisis</label>
-              <select v-model="store.config.duracion" class="input">
-                <option value="30">30 segundos</option>
-                <option value="60">1 minuto</option>
-                <option value="120">2 minutos</option>
-                <option value="300">5 minutos</option>
+              <select v-model.number="store.config.duracion" class="input">
+                <option :value="10">10 segundos (prueba)</option>
+                <option :value="30">30 segundos</option>
+                <option :value="60">1 minuto</option>
+                <option :value="120">2 minutos</option>
+                <option :value="300">5 minutos</option>
               </select>
             </div>
 
@@ -416,14 +417,16 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--space-6) var(--space-4);
+  height: 64px;
+  padding: 0 var(--space-4);
   background: var(--gradient-primary);
-  border-bottom: 1px solid var(--color-gray-200);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
   color: var(--color-white);
+  margin-bottom: var(--space-4);
 }
 
 .logo-section {
@@ -438,7 +441,7 @@ onUnmounted(() => {
 }
 
 .logo-img {
-  height: 100px;
+  height: 48px;
   width: auto;
 }
 
@@ -473,11 +476,11 @@ onUnmounted(() => {
 /* Vista de análisis */
 .analysis-view {
   flex: 1;
-  padding: var(--space-4);
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  padding-bottom: 100px;
+  padding-bottom: 80px; /* Mantiene espacio para la navegación inferior */
 }
 
 .analysis-header {
@@ -752,11 +755,11 @@ onUnmounted(() => {
 /* Vista principal */
 .main-content {
   flex: 1;
-  padding: var(--space-4);
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
-  padding-bottom: 100px; /* Espacio para navegación global */
+  padding-bottom: 80px; /* Espacio para navegación global */
 }
 
 /* Banner promocional */

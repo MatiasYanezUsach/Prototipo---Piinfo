@@ -243,7 +243,8 @@ onMounted(() => {
   background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
   display: flex;
   flex-direction: column;
-  padding-bottom: 100px; /* Espacio para navegación global */
+  padding: 0;
+  padding-bottom: 80px; /* Espacio para navegación inferior */
 }
 
 .analysis-header {

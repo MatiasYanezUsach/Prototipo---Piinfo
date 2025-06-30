@@ -89,7 +89,7 @@
   <style scoped>
   .bottom-navigation {
     background: var(--color-white);
-    border-top: 1px solid var(--color-gray-200);
+    /* Eliminamos el borde superior para evitar contornos */
     padding: var(--spacing-sm) 0;
     position: sticky;
     bottom: 0;
@@ -102,8 +102,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    max-width: 428px;
-    margin: 0 auto;
+    width: 100%;
     padding: 0 var(--spacing-sm);
   }
   

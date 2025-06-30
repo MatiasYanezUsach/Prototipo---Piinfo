@@ -2,6 +2,8 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
+import Toast, { POSITION } from 'vue-toastification'
+import 'vue-toastification/dist/index.css'
 
 // Importar estilos globales
 import './assets/main.css'
@@ -91,6 +93,17 @@ app.config.globalProperties.$formatTime = (seconds) => {
 // Usar plugins
 app.use(pinia)
 app.use(router)
+
+// Toast plugin
+const toastOptions = {
+  position: POSITION.TOP_RIGHT,
+  timeout: 5000,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  draggablePercent: 0.6,
+}
+app.use(Toast, toastOptions)
 
 // Montar la aplicación
 app.mount('#app')

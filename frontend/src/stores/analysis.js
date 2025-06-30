@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { io } from 'socket.io-client'
+import { useToast } from 'vue-toastification'
 
 export const useAnalysisStore = defineStore('analysis', {
   state: () => ({
@@ -209,13 +210,15 @@ export const useAnalysisStore = defineStore('analysis', {
     },
 
     showNotification(message, type = 'success') {
+      const toast = useToast()
+      toast(message, { type })
+      // Mantener compatibilidad con el componente Notification (opcional)
       this.notification.message = message;
       this.notification.type = type;
       this.notification.show = true;
-
       setTimeout(() => {
         this.hideNotification();
-      }, 6000); // Ocultar después de 6 segundos
+      }, 6000)
     },
 
     hideNotification() {
