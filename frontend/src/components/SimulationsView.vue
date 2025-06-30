@@ -132,6 +132,11 @@
   
   <script setup>
   import { ref } from 'vue'
+  import imgMassAudience from '@/assets/simulations/presentacion_publico_masivo.png'
+  import imgConversation from '@/assets/simulations/conversacion_1v1.png'
+  import imgInterview from '@/assets/simulations/entrevista_practica.png'
+  import imgTeamMeeting from '@/assets/simulations/reunion_equipo.png'
+  import imgSalesPitch from '@/assets/simulations/presentacion_ventas.png'
   
   const emit = defineEmits(['back', 'navigate', 'startSimulation'])
   
@@ -145,7 +150,7 @@
       title: 'Presentación con Público Masivo',
       description: 'Simulación que permite medir tu experiencia frente a gran cantidad de personas',
       fullDescription: 'Esta simulación te coloca frente a una audiencia de más de 100 personas en un auditorio profesional. Practicarás técnicas de proyección de voz, manejo del espacio escénico y conexión con audiencias grandes.',
-      image: '/api/placeholder/300/200',
+      image: imgMassAudience,
       duration: 30,
       level: 'Avanzado',
       difficulty: '8/10',
@@ -165,7 +170,7 @@
       title: 'Conversación 1 vs 1',
       description: 'Simulación de conversación casual que permite medir tu experiencia en una charla personal o profesional.',
       fullDescription: 'Practica conversaciones íntimas y profesionales en un ambiente controlado. Ideal para mejorar habilidades de comunicación interpersonal, escucha activa y construcción de rapport.',
-      image: '/api/placeholder/300/200',
+      image: imgConversation,
       duration: 15,
       level: 'Básico',
       difficulty: '3/10',
@@ -185,7 +190,7 @@
       title: 'Entrevista de Práctica Profesional',
       description: 'Simulación que permite medir tu experiencia previa al mundo laboral mediante preguntas y respuestas.',
       fullDescription: 'Simula una entrevista de trabajo real con preguntas típicas y situaciones desafiantes. Perfecto para prepararte para procesos de selección y mejorar tu comunicación profesional.',
-      image: '/api/placeholder/300/200',
+      image: imgInterview,
       duration: 20,
       level: 'Intermedio',
       difficulty: '6/10',
@@ -205,7 +210,7 @@
       title: 'Reunión de Equipo',
       description: 'Simulación de reunión corporativa con múltiples participantes y toma de decisiones.',
       fullDescription: 'Participa en una reunión de equipo donde deberás presentar ideas, debatir propuestas y llegar a consensos. Ideal para líderes y profesionales que trabajan en equipo.',
-      image: '/api/placeholder/300/200',
+      image: imgTeamMeeting,
       duration: 25,
       level: 'Intermedio',
       difficulty: '5/10',
@@ -225,7 +230,7 @@
       title: 'Presentación de Ventas',
       description: 'Simulación de pitch de ventas para clientes potenciales con objeciones y negociación.',
       fullDescription: 'Perfecciona tu técnica de ventas presentando productos o servicios a clientes exigentes. Incluye manejo de objeciones y técnicas de persuasión.',
-      image: '/api/placeholder/300/200',
+      image: imgSalesPitch,
       duration: 18,
       level: 'Intermedio',
       difficulty: '7/10',
@@ -351,14 +356,17 @@
   
   .simulation-image {
     position: relative;
-    height: 160px;
+    /* Mantener una relación de aspecto 16:9 para evitar distorsión o recortes inesperados */
+    aspect-ratio: 16 / 9;
     overflow: hidden;
   }
   
   .simulation-image img {
     width: 100%;
     height: 100%;
+    /* Cubrir todo el contenedor manteniendo la proporción y centrando la imagen */
     object-fit: cover;
+    object-position: center;
   }
   
   .simulation-overlay {

@@ -115,7 +115,8 @@
       <div class="promo-banner">
         <div class="promo-content">
           <h2>ROMPE TUS BARRERAS Y CONVIÉRTETE EN EXPERTO</h2>
-          <button class="btn btn-secondary promo-btn" @click="openConfig">
+          <!-- Botón para mostrar las características del Plan Pro -->
+          <button class="btn btn-secondary promo-btn" @click="openProInfo">
             ACCEDER AL PLAN PRO
           </button>
         </div>
@@ -258,6 +259,38 @@
         </div>
       </div>
     </transition>
+
+    <!-- Modal de información del Plan Pro -->
+    <template v-if="showProInfo">
+      <transition name="modal">
+        <div class="modal-overlay" @click="closeProInfo">
+          <div class="config-modal" @click.stop>
+            <div class="modal-header">
+              <h3>PLAN PRO – Próximamente</h3>
+              <button class="close-btn" @click="closeProInfo">✕</button>
+            </div>
+            <div class="modal-body">
+              <p style="font-weight: bold; color: var(--color-primary);">¡Potencia tu oratoria con las funciones exclusivas del Plan Pro!</p>
+              <ul class="plan-pro-features">
+                <li>Simulaciones avanzadas ilimitadas</li>
+                <li>Análisis IA en tiempo real con métricas ampliadas</li>
+                <li>Reportes detallados en PDF y recomendaciones personalizadas</li>
+                <li>Acceso a casos de éxito y mentorías de expertos</li>
+              </ul>
+              <p style="margin-top: 1rem; font-weight: bold; color: var(--warning);">
+                El sistema de pagos aún no está disponible. ¡Lanzamiento muy pronto!
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" disabled>
+                Iniciar pago (Próximamente)
+              </button>
+              <button class="btn btn-ghost" @click="closeProInfo">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </template>
   </div>
 </template>
 
@@ -270,6 +303,8 @@ const store = useAnalysisStore()
 
 // Estado local
 const showConfig = ref(false)
+// Estado del modal de información del Plan Pro
+const showProInfo = ref(false)
 
 // Computed
 const getConnectionClass = () => ({
@@ -287,8 +322,17 @@ const openConfig = () => {
   showConfig.value = true
 }
 
+// Abrir modal con información del Plan Pro
+const openProInfo = () => {
+  showProInfo.value = true
+}
+
 const closeConfig = () => {
   showConfig.value = false
+}
+
+const closeProInfo = () => {
+  showProInfo.value = false
 }
 
 const startQuickTest = () => {
@@ -1115,5 +1159,10 @@ onUnmounted(() => {
 
 .mirror {
   transform: scaleX(-1);
+}
+
+/* Estilos específicos para las características del Plan Pro */
+.plan-pro-features li {
+  color: #000;
 }
 </style>

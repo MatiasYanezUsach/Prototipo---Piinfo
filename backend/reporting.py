@@ -102,7 +102,7 @@ def generar_reporte_avanzado(nombre_usuario, duracion, metricas, config):
     
     # Portada
     elementos.append(Spacer(1, 1.2*inch))
-    elementos.append(Paragraph("ORATOR.IA", estilo_titulo))
+    elementos.append(Paragraph(".", estilo_titulo))
     elementos.append(Paragraph("Reporte de Análisis de Presentación", estilos['Heading2']))
     elementos.append(Spacer(1, 0.5*inch))
     

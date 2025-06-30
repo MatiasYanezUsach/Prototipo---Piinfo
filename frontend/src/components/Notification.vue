@@ -51,9 +51,8 @@ watch(() => store.notification.show, (newValue) => {
 <style scoped>
 .notification {
   position: fixed;
-  bottom: 30px;
+  top: 20px;
   right: 20px;
-  left: 20px;
   max-width: 390px;
   margin: 0 auto;
   background: var(--white);
@@ -271,13 +270,13 @@ watch(() => store.notification.show, (newValue) => {
   }
 }
 
-/* Responsive */
+/* Ajustes responsive: mantener arriba a la derecha */
 @media (max-width: 480px) {
   .notification {
-    bottom: 20px;
+    top: 16px;
     right: 16px;
-    left: 16px;
-    max-width: none;
+    left: auto;
+    max-width: calc(100% - 32px);
   }
 }
 
@@ -285,6 +284,7 @@ watch(() => store.notification.show, (newValue) => {
   .notification {
     max-width: 420px;
     right: 30px;
+    top: 30px;
     left: auto;
   }
 }
